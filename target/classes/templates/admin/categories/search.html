@@ -1,5 +1,8 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="vi">
+<html xmlns:th="http://www.thymeleaf.org" lang="vi"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{admin/layout_admin.html}">
+<section class="row" layout:fragment="content">
 <head>
     <title>Search Categories</title>
     <link rel="stylesheet" th:href="@{/css/style.css}" />
@@ -32,4 +35,5 @@
 </table>
 <a th:href="@{/admin/categories}">Back to list</a>
 </body>
+</section>
 </html>
