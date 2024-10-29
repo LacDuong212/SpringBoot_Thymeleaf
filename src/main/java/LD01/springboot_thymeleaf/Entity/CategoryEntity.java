@@ -1,4 +1,4 @@
-package LD01.Entity;
+package LD01.springboot_thymeleaf.Entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

@@ -1,6 +1,6 @@
-package LD01.Service;
+package LD01.springboot_thymeleaf.Service;
 
-import LD01.Entity.CategoryEntity;
+import LD01.springboot_thymeleaf.Entity.CategoryEntity;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

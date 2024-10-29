@@ -1,9 +1,8 @@
-package LD01.Service.Impl;
+package LD01.springboot_thymeleaf.Service.Impl;
 
-import LD01.Entity.CategoryEntity;
-import LD01.Repository.CategoryRepository;
-import LD01.Service.ICategoryService;
-import ch.qos.logback.core.util.StringUtil;
+import LD01.springboot_thymeleaf.Entity.CategoryEntity;
+import LD01.springboot_thymeleaf.Repository.CategoryRepository;
+import LD01.springboot_thymeleaf.Service.ICategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;

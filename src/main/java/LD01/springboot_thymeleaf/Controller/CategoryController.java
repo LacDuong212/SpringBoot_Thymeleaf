@@ -1,9 +1,8 @@
-package LD01.Controller;
+package LD01.springboot_thymeleaf.Controller;
 
-import LD01.Entity.CategoryEntity;
-import LD01.Model.CategoryModel;
-import LD01.Service.ICategoryService;
-import ch.qos.logback.core.util.StringUtil;
+import LD01.springboot_thymeleaf.Entity.CategoryEntity;
+import LD01.springboot_thymeleaf.Model.CategoryModel;
+import LD01.springboot_thymeleaf.Service.ICategoryService;
 import jakarta.validation.Valid;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,14 +11,12 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
-import org.springframework.stereotype.Repository;
 import org.springframework.ui.ModelMap;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;

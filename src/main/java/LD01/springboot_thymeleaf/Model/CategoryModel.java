@@ -1,4 +1,4 @@
-package LD01.Model;
+package LD01.springboot_thymeleaf.Model;
 
 import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotEmpty;

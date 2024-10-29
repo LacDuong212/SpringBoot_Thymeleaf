@@ -1,6 +1,6 @@
-package LD01.Repository;
+package LD01.springboot_thymeleaf.Repository;
 
-import LD01.Entity.CategoryEntity;
+import LD01.springboot_thymeleaf.Entity.CategoryEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
