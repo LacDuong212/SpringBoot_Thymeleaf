@@ -28,7 +28,7 @@ public class CategoryController {
     @Autowired
     ICategoryService categoryService;
 
-    @GetMapping("add")
+    @GetMapping("/add")
     public String add(ModelMap model) {
         CategoryModel cateModel = new CategoryModel();
         cateModel.setIsEdit(false);
@@ -36,7 +36,7 @@ public class CategoryController {
         return "admin/categories/addOrEdit";
     }
 
-    @PostMapping("saveOrUpdate")
+    @PostMapping("/saveOrUpdate")
     public ModelAndView saveOrUpdate(ModelMap model, @Valid @ModelAttribute("category") CategoryModel cateModel, BindingResult result) {
         if (result.hasErrors()) {
             return new ModelAndView("admin/categories/addOrEdit");
@@ -44,13 +44,7 @@ public class CategoryController {
         CategoryEntity entity = new CategoryEntity();
         BeanUtils.copyProperties((cateModel), entity);
         categoryService.save(entity);
-        String message = "";
-        if(cateModel.getIsEdit()){
-            message="Category is Edited!!";
-        }
-        else {
-            message="Category is saved!!";
-        }
+        String message = cateModel.getIsEdit() ? "Category is Edited!!" : "Category is saved!!";
         model.addAttribute("message", message);
         return new ModelAndView("forward:/admin/categories/searchpaginated", model);
     }
@@ -66,7 +60,7 @@ public class CategoryController {
     public ModelAndView edit(ModelMap model, @PathVariable("categoryId") Long categoryId) {
         Optional<CategoryEntity> optcategory = categoryService.findById(categoryId);
         CategoryModel cateModel = new CategoryModel();
-        if(optcategory.isPresent()) {
+        if (optcategory.isPresent()) {
             CategoryEntity entity = optcategory.get();
             BeanUtils.copyProperties(entity, cateModel);
             cateModel.setIsEdit(true);
@@ -87,40 +81,42 @@ public class CategoryController {
 
     @GetMapping("search")
     public String search(ModelMap model, @RequestParam(name = "name", required = false) String name) {
-        List<CategoryEntity> list = null;
-        if(StringUtils.hasText(name)){
+        List<CategoryEntity> list;
+        if (StringUtils.hasText(name)) {
             list = categoryService.findByCategoryNameContaining(name);
-        }else {
+        } else {
             list = categoryService.findAll();
         }
         model.addAttribute("categories", list);
+        model.addAttribute("name", name);
         return "admin/categories/search";
     }
 
     @GetMapping("searchpaginated")
-    public String search(ModelMap model, @RequestParam(name = "name", required = false)String name, @RequestParam("page") Optional<Integer> page, @RequestParam("size") Optional<Integer> size) {
+    public String search(ModelMap model,
+                         @RequestParam(name = "name", required = false) String name,
+                         @RequestParam("page") Optional<Integer> page,
+                         @RequestParam("size") Optional<Integer> size) {
         int count = (int) categoryService.count();
         int currentPage = page.orElse(1);
         int pageSize = size.orElse(3);
-        Pageable pageable = PageRequest.of(currentPage-1, pageSize, Sort.by("name"));
-        Page<CategoryEntity> resultPage = null;
-        if(StringUtils.hasText(name)){
+        Pageable pageable = PageRequest.of(currentPage - 1, pageSize, Sort.by("name"));
+        Page<CategoryEntity> resultPage;
+
+        if (StringUtils.hasText(name)) {
             resultPage = categoryService.findByCategoryNameContaining(name, pageable);
-            model.addAttribute("name", name);
-        }else {
+            model.addAttribute("name", name); // Thêm tên vào model
+        } else {
             resultPage = categoryService.findAll(pageable);
         }
-        int totalPage = resultPage.getTotalPages();
-        if(totalPage > 0){
-            int start = Math.max(1, currentPage-2);
-            int end = Math.min(currentPage+2, totalPage);
-            if (totalPage >count){
-                if(end == totalPage) start = end - count;
-                else if (start == 1) end = start + count;
-            }
-            List<Integer> pageNumbers = IntStream.rangeClosed(start, end).boxed().collect(Collectors.toList());
-            model.addAttribute("pageNumbers", pageNumbers);
-        }model.addAttribute("categoryPage", resultPage);
+
+        // Thêm size vào model
+        model.addAttribute("size", pageSize);
+
+        // Thêm categoryPage vào model
+        model.addAttribute("categoryPage", resultPage);
+        model.addAttribute("pageNumbers", IntStream.rangeClosed(1, resultPage.getTotalPages()).boxed().collect(Collectors.toList()));
+
         return "admin/categories/searchpaginated";
     }
 }

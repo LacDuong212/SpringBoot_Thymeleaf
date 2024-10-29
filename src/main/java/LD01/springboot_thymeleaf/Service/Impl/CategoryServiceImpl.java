@@ -16,17 +16,19 @@ import java.util.Optional;
 
 @Service
 public class CategoryServiceImpl implements ICategoryService {
+
     @Autowired
     CategoryRepository categoryRepository;
 
     public CategoryServiceImpl(CategoryRepository categoryRepository) {
         this.categoryRepository = categoryRepository;
     }
+
     @Override
     public <S extends CategoryEntity> S save(S entity){
-        if(entity.getCategoryId() == null){
-            return  categoryRepository.save(entity);
-        }else{
+        if (entity.getCategoryId() == null) {
+            return categoryRepository.save(entity);
+        } else {
             Optional<CategoryEntity> opt = findById(entity.getCategoryId());
             if(opt.isPresent()){
                 if(StringUtils.isEmpty(entity.getName())){

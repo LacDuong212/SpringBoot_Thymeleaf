@@ -1,14 +1,21 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="vi"
-        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-        layout:decorate="~{admin/layout_admin.html}">
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{admin/layout_admin.html}">
 <section class="row" layout:fragment="content">
 <head>
-    <title>Category List</title>
+    <title>Search Categories</title>
     <link rel="stylesheet" th:href="@{/css/style.css}" />
 </head>
 <body>
-<h2>Category List</h2>
+<h2>Search Categories</h2>
+<form th:action="@{/admin/categories/search}" method="get">
+    <label for="categoryName">Category Name:</label>
+    <input type="text" id="categoryName" name="name" placeholder="Category Name" th:value="${name}" />
+    <button type="submit">Search</button>
+</form>
+
+
 <table>
     <thead>
     <tr>
@@ -26,7 +33,7 @@
     </tr>
     </tbody>
 </table>
-<a th:href="@{/admin/categories/add}">Add New Category</a>
+<a th:href="@{/admin/categories}">Back to list</a>
 </body>
 </section>
 </html>
