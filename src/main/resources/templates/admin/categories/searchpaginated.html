@@ -1,46 +1,66 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="vi"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{admin/layout_admin.html}">
-<section class="row" layout:fragment="content">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Paginated Category Search</title>
-    <link rel="stylesheet" th:href="@{/css/style.css}" />
+    <meta charset="UTF-8">
+    <title>Categories</title>
 </head>
 <body>
-<h2>Categories</h2>
-<form th:action="@{/admin/categories/search}" method="get">
-    <label for="categoryName">Category Name:</label>
-    <input type="text" id="categoryName" name="name" placeholder="Category Name" th:value="${name}" />
+
+<a th:href="@{/admin/categories/add}">Add category</a>
+
+<!-- Display message -->
+<div th:if="${message != null}">
+    <i th:text="${message}"></i>
+</div>
+<!-- End message -->
+
+<form th:action="@{/admin/categories/searchpaginated}" method="get">
+    <input type="text" name="name" id="name" placeholder="Nhập từ khóa để tìm" />
     <button type="submit">Search</button>
 </form>
 
-<table>
-    <thead>
-    <tr>
-        <th>Name</th>
-        <th>Actions</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="category : ${categoryPage.content}">
-        <td th:text="${category.name}"></td>
-        <td>
-            <a th:href="@{/admin/categories/edit/{categoryId}(categoryId=${category.id})}">Edit</a>
-            <a th:href="@{/admin/categories/delete/{categoryId}(categoryId=${category.id})}" onclick="return confirm('Are you sure you want to delete?');">Delete</a>
-        </td>
-    </tr>
-    </tbody>
-</table>
-
-<div>
-    <span>Page: </span>
-    <span th:each="pageNumber : ${pageNumbers}">
-        <a th:href="@{/admin/categories/searchpaginated(page=${pageNumber}, size=${size}, name=${name})}" th:text="${pageNumber}"></a>
-    </span>
+<div th:if="${!categoryPage.hasContent()}">
+    No Category
 </div>
 
-<a th:href="@{/admin/categories}">Back to list</a>
+<div th:if="${categoryPage.hasContent()}">
+    <table>
+        <tr>
+            <th>STT</th>
+            <th>Category name</th>
+            <th>Action</th>
+        </tr>
+        <tr th:each="cate, status : ${categoryPage.content}">
+            <td th:text="${status.index + 1}"></td>
+            <td th:text="${cate.name}"></td>
+            <td>
+                <a th:href="@{/admin/categories/edit/{id}(id=${cate.id})}">Edit</a>
+                <a th:href="@{/admin/categories/delete/{id}(id=${cate.id})}">Delete</a>
+            </td>
+        </tr>
+    </table>
+</div>
+
+<form th:action="@{/admin/categories/searchpaginated}" method="get">
+    <label>Page size:</label>
+    <select name="size" id="size" onchange="this.form.submit()">
+        <option th:selected="${categoryPage.size == 3}" value="3">3</option>
+        <option th:selected="${categoryPage.size == 5}" value="5">5</option>
+        <option th:selected="${categoryPage.size == 10}" value="10">10</option>
+        <option th:selected="${categoryPage.size == 15}" value="15">15</option>
+        <option th:selected="${categoryPage.size == 20}" value="20">20</option>
+    </select>
+</form>
+
+<div th:if="${categoryPage.totalPages > 0}">
+    <ul>
+        <li th:each="pageNumber : ${pageNumbers}"
+            th:class="${pageNumber == categoryPage.number + 1 ? 'page-item active' : 'page-item'}">
+            <a th:href="@{/admin/categories/searchpaginated(name=${name}, size=${categoryPage.size}, page=${pageNumber})}"
+               th:text="${pageNumber}"></a>
+        </li>
+    </ul>
+</div>
+
 </body>
-</section>
 </html>
