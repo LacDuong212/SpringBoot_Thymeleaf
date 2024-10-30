@@ -101,19 +101,6 @@ public class CategoryController {
         return new ModelAndView("redirect:/admin/categories");
     }
 
-    @GetMapping("search")
-    public String search(ModelMap model, @RequestParam(name = "name", required = false) String name) {
-        List<CategoryEntity> list;
-        if (StringUtils.hasText(name)) {
-            list = categoryService.findByCategoryNameContaining(name);
-        } else {
-            list = categoryService.findAll();
-        }
-        model.addAttribute("categories", list);
-        model.addAttribute("name", name);
-        return "admin/categories/search";
-    }
-
     @GetMapping("searchpaginated")
     public String search(ModelMap model,
                          @RequestParam(name="name",required = false) String name,
